@@ -32,5 +32,3 @@ jobs:
       - name: Push Docker image to Artifact Registry
         run: |
           docker push us-central1-docker.pkg.dev/aayesha-project/whatsappv2/whatsappv2goimg:latest
-
-      
