@@ -33,11 +33,4 @@ jobs:
         run: |
           docker push us-central1-docker.pkg.dev/aayesha-project/whatsappv2/whatsappv2goimg:latest
 
-      - name: Deploy to Cloud Run
-        run: |
-          gcloud run deploy whatsappv2go \
-            --image us-central1-docker.pkg.dev/aayesha-project/whatsappv2/whatsappv2goimg:latest \
-            --region us-central1 \
-            --platform managed \
-            --allow-unauthenticated \
-            --port 8080
+    
