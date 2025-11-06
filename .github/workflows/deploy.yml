@@ -22,6 +22,14 @@ jobs:
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
 
+      - name: Create Artifact Registry (if not exists)
+        run: |
+          gcloud artifacts repositories describe whatsappv2 --location=us-central1 || \
+          gcloud artifacts repositories create whatsappv2 \
+            --repository-format=docker \
+            --location=us-central1 \
+            --description="Docker repo for WhatsApp v2 images"
+
       - name: Configure Docker for Artifact Registry
         run: gcloud auth configure-docker us-central1-docker.pkg.dev
 
@@ -32,3 +40,12 @@ jobs:
       - name: Push Docker image to Artifact Registry
         run: |
           docker push us-central1-docker.pkg.dev/aayesha-project/whatsappv2/whatsappv2goimg:latest
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy whatsappv2go \
+            --image us-central1-docker.pkg.dev/aayesha-project/whatsappv2/whatsappv2goimg:latest \
+            --region us-central1 \
+            --platform managed \
+            --allow-unauthenticated \
+            --port 8080
